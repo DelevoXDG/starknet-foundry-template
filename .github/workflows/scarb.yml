@@ -8,14 +8,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Manifest after checkout
+        run: grep -n "\[profile\..*\.cairo\]" Scarb.toml || true
+
       - uses: software-mansion/setup-scarb@v1
         with:
           scarb-version: "2.11.4"
           scarb-lock: ./Scarb.lock
 
+      - name: Manifest after setup-scarb
+        run: grep -n "\[profile\..*\.cairo\]" Scarb.toml || true
+
       - uses: foundry-rs/setup-snfoundry@v4
         with:
           starknet-foundry-version: "0.41.0"
+
+      - name: Manifest after setup-snfoundry
+        run: grep -n "\[profile\..*\.cairo\]" Scarb.toml || true
 
       - name: Check scarb & snforge versions
         run: |
