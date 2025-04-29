@@ -17,4 +17,26 @@ jobs:
         with:
           starknet-foundry-version: "0.41.0"
 
+      - name: Check scarb & snforge versions
+        run: |
+          which scarb
+          scarb --version
+          which snforge
+          snforge --version
+
+      - name: Check SCARB and SCARB_PROFILE env vars
+        run: |
+          env | grep -E '^SCARB(_PROFILE)?=' || echo "no SCARB_PROFILE or SCARB var set"
+
+      - name: Show first lines of Scarb.toml
+        run: |
+          sed -n '1,200p' Scarb.toml | cat -n
+
+      - name: Count profile.cairo headers
+        run: |
+          grep -n "\[profile\..*\.cairo\]" Scarb.toml || echo "no profile.cairo headers"
+
+      - name: Check line endings of Scarb.toml
+        run: file Scarb.toml
+
       - run: snforge test
